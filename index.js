@@ -29,10 +29,41 @@ async function run() {
     await client.connect();
     
     const productCollection=client.db('TrendBazar').collection('products');
+    const elecronicCollection=client.db('TrendBazar').collection('electronics');
+    const fashonCollecton=client.db('TrendBazar').collection('fashon');
+    const computerCollecton=client.db('TrendBazar').collection('computer');
+    const sportsCollecton=client.db('TrendBazar').collection('sports');
+    const cartCollecton=client.db('TrendBazar').collection('cart');
 
 
     app.get('/products',async(req,res)=>{
         const result= await productCollection.find().toArray();
+        res.send(result);
+    })
+    app.get('/electronics',async(req,res)=>{
+        const result= await elecronicCollection.find().toArray();
+        res.send(result);
+    })
+    app.get('/fashon',async(req,res)=>{
+        const result= await fashonCollecton.find().toArray();
+        res.send(result);
+    })
+    app.get('/computer',async(req,res)=>{
+        const result= await computerCollecton.find().toArray();
+        res.send(result);
+    })
+    app.get('/sports',async(req,res)=>{
+        const result= await sportsCollecton.find().toArray();
+        res.send(result);
+    })
+    // cart collection
+    app.get('/cart',async(req,res)=>{
+        const result= await cartCollecton.find().toArray();
+        res.send(result);
+    })
+    app.post('/cart',async(req,res)=>{
+        const product=req.body;
+        const result= await cartCollecton.insertOne(product);
         res.send(result);
     })
     await client.db("admin").command({ ping: 1 });
