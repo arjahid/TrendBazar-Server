@@ -1,6 +1,6 @@
 const express= require('express');
 const app= express();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
  require('dotenv').config();
 const port=process.env.PORT || 3200;
 const cors= require('cors');
@@ -44,12 +44,30 @@ async function run() {
         const result= await elecronicCollection.find().toArray();
         res.send(result);
     })
+    app.get('/electronics/:id',async(req,res)=>{
+        const id=req.params.id;
+        const query={_id: new ObjectId(id)}
+        const result= await elecronicCollection.findOne(query);
+        res.send(result);
+    })
     app.get('/fashon',async(req,res)=>{
         const result= await fashonCollecton.find().toArray();
         res.send(result);
     })
+    app.get('/fashon/:id',async(req,res)=>{
+        const id=req.params.id;
+        const query={_id: new ObjectId(id)}
+        const result= await fashonCollecton.findOne(query);
+        res.send(result);
+    })
     app.get('/computer',async(req,res)=>{
         const result= await computerCollecton.find().toArray();
+        res.send(result);
+    })
+    app.get('/computer/:id',async(req,res)=>{
+        const id=req.params.id;
+        const query={_id: new ObjectId(id)}
+        const result= await computerCollecton.find(query).toArray();
         res.send(result);
     })
     app.get('/sports',async(req,res)=>{
@@ -58,12 +76,20 @@ async function run() {
     })
     // cart collection
     app.get('/cart',async(req,res)=>{
-        const result= await cartCollecton.find().toArray();
+        const email=req.query.email;
+        const query={email:email}
+        const result= await cartCollecton.find(query).toArray();
         res.send(result);
     })
     app.post('/cart',async(req,res)=>{
         const product=req.body;
         const result= await cartCollecton.insertOne(product);
+        res.send(result);
+    })
+    app.delete('/cart/:id',async(req,res)=>{
+        const id=req.params.id;
+        const query={_id: new ObjectId(id)}
+        const result= await cartCollecton.deleteOne(query);
         res.send(result);
     })
     await client.db("admin").command({ ping: 1 });
