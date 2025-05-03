@@ -7,7 +7,9 @@ const cors= require('cors');
 
 // /
 // middlewares
-app.use(cors());
+app.use(cors({
+    origin: ["https://trendbazar-client.onrender.com", "http://localhost:3001"]
+}));
 app.use(express.json());
 
 
